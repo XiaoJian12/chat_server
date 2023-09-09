@@ -1,0 +1,47 @@
+create database chat;
+
+use chat;
+
+create table User(
+    id int unsigned primary key not null auto_increment,
+    name varchar(50) unique not null,
+    password varchar(50) not null,
+    state enum('online', 'offline') default 'offline'
+);
+
+create table Friend(
+    userid int not null,
+    friendid int not null,
+    primary key(userid, friendid)
+);
+
+create table AllGroup(
+    id int primary key auto_increment,
+    groupname varchar(50) unique not null,
+    groupdesc varchar(200) default ''
+);
+
+create table GroupUser(
+    groupid int not null,
+    userid int not null,
+    grouprole enum('creator', 'normal') default 'normal',
+    primary key(groupid, userid)
+);
+
+create table OfflineMessage(
+    userid int not null,
+    message varchar(500) not null
+);
+
+{"msgid":1,"id":1,"password":"123456"}
+{"msgid":1,"id":2,"password":"666666"}
+
+{"msgid":3,"name":"li si","password":"666666"}
+
+{"msgid":5,"id":1,"from":"zhang san","to":2,"msg":"hello!"}
+{"msgid":5,"id":2,"from":"li si","to":1,"msg":"ok!"}
+
+{"msgid":6,"id":1,"friendid":2}
+{"msgid":6,"id":2,"friendid":1}
+
+select a.id, a.name, a.state, b.grouprole from user a inner join GroupUser b on a.id = b.userid where groupid=2;
